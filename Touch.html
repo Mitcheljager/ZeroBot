@@ -46,17 +46,15 @@
 		user-select: none;
 	}
 	input.cmn-toggle-round-flat + label {
-  	background-color: transparent;
-  	border-radius: 10%;
+		background-color: transparent;
+		border-radius: 10%;
 		border: 2px;
+		margin-left: 1rem;
+		padding: 1rem;
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-    
-		padding-top: 20%;
-    padding-bottom: 20%;
-    font-size: 16px;
-		margin: 40% 7% 10%;
+        font-size: 16px;
 		cursor: pointer;
 		transition: background 0.4s;
 	}
@@ -66,17 +64,13 @@
 	.cam_button {
 		background-color: transparent;
 		border-radius: 100%;
+		height: 40px;
+		width: 40px;
 		border: 7px;
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-		
-		padding-top: 40%;
-    padding-bottom: 40%;
-    padding-left: 40%;
-    padding-right: 40%;
 		font-size: 16px;
-		margin: 50% 3% 4% 4%;
 		cursor: pointer;
 	}
 	
@@ -85,19 +79,18 @@
 	}
   
   .off_button {
+	display: flex;
+	align-center: center;
+	padding: 1rem;
     background-color: transparent;
-		border-radius: 10%;
-		border: 2px;
-		border-style: solid;
-		border-color: white;
-		text-align:center;
-		
-    padding-top: 20%;
-    padding-bottom: 20%;
+	border-radius: 10%;
+	border: 2px;
+	border-style: solid;
+	border-color: white;
+	text-align:center;
     font-size: 100%;
-    margin: 10% 7%;
-		cursor: pointer;
-	}
+    cursor: pointer;
+   }
   .off_button:active {
   	background-color: gray;
 	}
@@ -109,11 +102,7 @@
 		border-style: solid;
 		border-color: white;
 		text-align:center;
-    
-		padding-top: 20%;
-    padding-bottom: 20%;
-    font-size: 16px;
-		margin: 40% 7% 10%;
+        font-size: 16px;
 		cursor: pointer;
 	}
 	.light_button:checked {
@@ -121,23 +110,28 @@
 	}
   
 	.sidenav {
+		display: flex;
+		align-items: center;
+		justify-content: space-between;
 		color: #fff;
-		height: 100%;
-		width: 13%;
+		height: 80px;
+		width: 100%;;
 		position: fixed;
 		z-index: 0;
-		top: 0px;
-		background-color: #111;
+		left: 0;
+		bottom: 0;
+		background-color: rgba(0, 0, 0, 0.5);
 		overflow-x: hidden;
-		padding-top: 20px;
 		font-family: 'Roboto', sans-serif;
 	}
-  
- 
 	
-  
-  
-  
+	.sidenav__block {
+		display: flex;
+	}
+	
+	.sidenav span {
+		margin-left: 1rem;
+	}
   
 	p#stream{
 		position: relative; 
@@ -612,18 +606,23 @@ function handleHeadlightClick(cb) {
 
 </center>
 
-<div class="sidenav">
-  <center id="temp" style="padding:40%;">0°C</center>
-  <center id="volt" style="padding:40%;">0V</center>
-</div>
 <div class="sidenav" style="right:0;z-index: 2;">
-  <center class="off_button" type="button" onclick="shutdown()">OFF</center>
+  <div class="sidenav__block">
+	<span id="temp">0°C</span>
+	<span id="volt">0V</span>
+  </div>
+  
   <center class="cam_button" type="button" onclick="takePicture()"></center>
-  <div>
-    <div class="switch">
-        <input id="cmn-toggle"css class="cmn-toggle cmn-toggle-round-flat" type="checkbox" onclick="handleHeadlightClick(this)">
-        <label for="cmn-toggle">LIGHT</label>
-    </div>
+  
+  <div class="sidenav__block">
+	  <center class="off_button" type="button" onclick="shutdown()">OFF</center>
+	
+	  <div>
+		<div class="switch">
+			<input id="cmn-toggle"css class="cmn-toggle cmn-toggle-round-flat" type="checkbox" onclick="handleHeadlightClick(this)">
+			<label for="cmn-toggle">LIGHT</label>
+		</div>
+	  </div>
   </div>
 </div>
 

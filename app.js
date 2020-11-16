@@ -11,10 +11,11 @@ var Gpio = require('pigpio').Gpio,
   A2 = new Gpio(17, {mode: Gpio.OUTPUT}),
   B1 = new Gpio( 4, {mode: Gpio.OUTPUT}),
   B2 = new Gpio(18, {mode: Gpio.OUTPUT});
+  SLEEP = new Gpio(23, {mode: Gpio.OUTPUT});
   LED = new Gpio(22, {mode: Gpio.OUTPUT});
 
 app.get('/', function(req, res){
-  res.sendfile('Touch.html');
+  res.sendFile(__dirname + '/Touch.html');
   console.log('HTML sent to client');
 });
 
@@ -27,11 +28,13 @@ io.on('connection', function(socket){
   socket.on('pos', function (msx, msy) {
     //console.log('X:' + msx + ' Y: ' + msy);
     //io.emit('posBack', msx, msy);
+    SLEEP.pwmWrite(255);
 	
-    msx = Math.min(Math.max(parseInt(msx), -255), 255);
-    msy = Math.min(Math.max(parseInt(msy), -255), 255);
+    msx = Math.min(Math.max(parseInt(msx), -240), 240);
+    msy = Math.min(Math.max(parseInt(msy), -240), 240);
 
     if(msx > 0){
+      console.log(msx)
       A1.pwmWrite(msx);
       A2.pwmWrite(0);
     } else {
@@ -51,7 +54,7 @@ io.on('connection', function(socket){
   });
   
   socket.on('light', function(toggle) {
-    LED.digitalWrite(toggle);    
+    LED.digitalWrite(toggle);
   });  
   
   socket.on('cam', function(toggle) {
@@ -62,8 +65,8 @@ io.on('connection', function(socket){
       numPics = parseInt(stdout)+1;
       // Turn off streamer, take photo, restart streamer
       var command = 'sudo killall mjpg_streamer ; raspistill -o cam' + numPics + '.jpg -n && sudo bash start_stream.sh';
-        //console.log("command: ", command);
-        child = exec(command, function(error, stdout, stderr){
+      console.log("command: ", command);
+      child = exec(command, function(error, stdout, stderr){
         io.emit('cam', 1);
       });
     });
@@ -78,7 +81,7 @@ io.on('connection', function(socket){
   socket.on('disconnect', function () {
     console.log('A user disconnected');
   });
-
+  
   setInterval(function(){ // send temperature every 5 sec
     child = exec("cat /sys/class/thermal/thermal_zone0/temp", function(error, stdout, stderr){
       if(error !== null){
@@ -99,7 +102,6 @@ io.on('connection', function(socket){
       });
     }
   }, 5000);
-
 });
 
 http.listen(port, function(){
